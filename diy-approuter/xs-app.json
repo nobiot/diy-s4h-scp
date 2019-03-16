@@ -1,0 +1,15 @@
+{
+  "routes": [
+    {
+      "source": "/ping",
+      "target": "/sap/bc/ping",
+      "destination": "diy-s4hana"
+    },
+    {
+      "source": "/customer",
+      "target": "/sap/opu/odata/sap/CB_CUSTOMER_SRV/",
+      "destination": "diy-s4hana"
+    }
+  ]
+  }
+    

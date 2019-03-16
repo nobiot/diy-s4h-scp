@@ -1,0 +1,10 @@
+---
+applications:
+- name: diy-approuter
+  host: diy-approuter
+  path: diy-approuter
+  memory: 128M
+  services:
+    - diy-s4hana-uaa
+    - diy-s4hana-dest
+    - diy-s4hana-connectivity
