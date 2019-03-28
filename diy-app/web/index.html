@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>TEST | DIY S/4HANA + SCP CF</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <style>
+    table#bills {
+      margin-bottom: 10%
+    }
+  </style>
+</head>
+<body>
+  <nav class="white" role="navigation">
+    <div class="nav-wrapper container">
+      <a id="logo-container" href="#" class="brand-logo">Logo</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="#">Navbar Link</a></li>
+      </ul>
+
+      <ul id="nav-mobile" class="sidenav">
+        <li><a href="#">Navbar Link</a></li>
+      </ul>
+      <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    </div>
+  </nav>
+
+  <div class="container">
+      <h1 id="title" class="teal-text text-lighten-2">Title</h1>
+      <h5 id="subtitle">Do-It-Yourself S/4HANA on-premise. Connect it with SAP Cloud Platform</h5>
+
+      <div class="section">
+          <a id="btn" class="btn-small waves-effect waves-light teal lighten-1" href="">Reflesh Table</a>
+          <table id="bills" class="striped">
+          </table>
+      </div>
+  </div>
+    
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
+    async function updateTitle () {
+      console.log('calling updateTitle()')
+      let json = await fetch('/app/test')
+      .then(res => res.json())
+      .then(user => {
+        console.log('user: ', user)
+        document.getElementById('title').textContent = "Hello " + user.name.givenName + "!"
+      })
+    }
+    updateTitle()
+
+    async function updateTable () {
+      console.log('calling updateTable()')
+    let tbl = document.getElementById('bills')
+    let tbody = tbl.createTBody()
+
+    let thead = tbl.createTHead()
+    let row = thead.insertRow(-1)
+    let hcell1 = document.createElement("th")
+    let text = document.createTextNode('Document #')
+    hcell1.appendChild(text)
+    row.appendChild(hcell1)
+
+    let hcell2 = document.createElement("th")
+    text = document.createTextNode('Bill Description')
+    hcell2.appendChild(text)
+    row.appendChild(hcell2)
+
+    let hcell3 = document.createElement("th")
+    text = document.createTextNode('Net')
+    hcell3.appendChild(text)
+    row.appendChild(hcell3)
+
+    let hcell4 = document.createElement("th")
+    text = document.createTextNode('Tax')
+    hcell4.appendChild(text)
+    row.appendChild(hcell4)
+
+    let hcell5 = document.createElement("th")
+    text = document.createTextNode('Currency')
+    hcell5.appendChild(text)
+    row.appendChild(hcell5)
+
+    let hcell6 = document.createElement("th")
+    text = document.createTextNode('Payment Terms')
+    hcell6.appendChild(text)
+    row.appendChild(hcell6)
+
+    let hcell7 = document.createElement("th")
+    text = document.createTextNode('Status')
+    hcell7.appendChild(text)
+    row.appendChild(hcell7)
+
+    let json = await fetch('/app/sap/bills')
+      .then(res => res.json())
+      .then(bills => {
+        let i = 0
+        for (let {BillingDocument: doc, 
+                  BillingDocumentDescription: description,
+                  NetValue: net,
+                  TaxAmount: tax,
+                  NetValueCurrency: cur,
+                  PaymentTermsDescription: terms,
+                  VF_STATUS_TEXT: status
+                  } of bills
+            ) 
+            {
+    
+              row = tbody.insertRow(-1)
+              let cell = row.insertCell(0)
+              text = document.createTextNode(doc)
+              cell.appendChild(text)
+
+              cell = row.insertCell(1)
+              text = document.createTextNode(description)
+              cell.appendChild(text)
+
+              cell = row.insertCell(2)
+              text = document.createTextNode(net)
+              cell.appendChild(text)
+
+              cell = row.insertCell(3)
+              text = document.createTextNode(tax)
+              cell.appendChild(text)
+
+              cell = row.insertCell(4)
+              text = document.createTextNode(cur)
+              cell.appendChild(text)
+
+              cell = row.insertCell(5)
+              text = document.createTextNode(terms)
+              cell.appendChild(text)
+
+              cell = row.insertCell(6)
+              text = document.createTextNode(status)
+              cell.appendChild(text)
+            }
+        
+        
+      })
+      .catch(err => console.log(err))
+    }
+    
+    let a = document.getElementById('btn')
+    a.onclick = updateTable()
+  </script>
+</body>
+</html>

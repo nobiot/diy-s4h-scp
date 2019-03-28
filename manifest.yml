@@ -4,6 +4,22 @@ applications:
   host: diy-approuter
   path: diy-approuter
   memory: 128M
+  env:
+    destinations: >
+      [
+        {
+          "name":"diy-app",
+          "url":"https://diy-app.cfapps.eu10.hana.ondemand.com/",
+          "forwardAuthToken": true
+        }
+      ]
+  services:
+    - diy-s4hana-uaa
+
+- name: diy-app
+  host: diy-app
+  path: diy-app
+  memory: 128M
   services:
     - diy-s4hana-uaa
     - diy-s4hana-dest
